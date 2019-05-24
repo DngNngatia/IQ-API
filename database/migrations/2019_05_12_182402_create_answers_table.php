@@ -17,7 +17,6 @@ class CreateAnswersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('question_id')->unsigned();
             $table->text('answer');
-            $table->boolean('correct')->default(false);
             $table->foreign('question_id')
                 ->references('id')
                 ->on('questions');

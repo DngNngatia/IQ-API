@@ -18,6 +18,7 @@ class CreateQuestionsTable extends Migration
             $table->integer('subject_id')->unsigned();
             $table->text('question');
             $table->time('time_allocated');
+            $table->integer('correct_answer')->default(0);
             $table->foreign('subject_id')
                  ->references('id')
                 ->on('subjects');

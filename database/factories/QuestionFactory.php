@@ -9,6 +9,7 @@ $factory->define(\App\Question::class, function (Faker $faker,$subject_id) {
     return [
         'subject_id' =>$subject_id,
         'question' => $faker->paragraph,
-        'time_allocated' => $faker->time('H:i:s',now()->addMinutes(20))
+        'correct_answer' => $faker->randomElement([0,1,2,3]),
+        'time_allocated' => $faker->numberBetween(30,200)
     ];
 });
