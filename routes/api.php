@@ -12,13 +12,18 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group([
+    'middleware' => 'auth:api'
+], function() {
+    Route::get('/topics', 'ApiController@topics');
+    Route::get('/subjects/{topic_id}', 'ApiController@subjects');
+    Route::get('/questions/{subject_id}', 'ApiController@questions');
+    Route::get('/answers/{question_id}', 'ApiController@answers');
+    Route::get('/scores/{user_id}/subjects/{subject_id}', 'ApiController@scores');
+    Route::post('/scores/{user_id}/subjects/{subject_id}', 'ScoreController@store');
+    Route::get('/subjects/{user_id}/score', 'ScoreController@subjects');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
 });
+Route::post('/login', 'LoginController@login');
+Route::post('/register', 'RegisterController@signup');
 
-Route::get('/topics','ApiController@topics');
-Route::get('/subjects/{topic_id}','ApiController@subjects');
-Route::get('/questions/{subject_id}','ApiController@questions');
-Route::get('/answers/{question_id}','ApiController@answers');
-Route::get('/scores/{user_id}/subjects/{subject_id}','ApiController@scores');
