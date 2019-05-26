@@ -21,8 +21,7 @@ class LoginController extends Controller
         if (!$validator->fails()){
             if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
                 $user = Auth::user();
-                $success['token'] =  $user->createToken('MyApp')-> accessToken;
-                return response()->json(['success' => $success], $this-> successStatus);
+                return response()->json(['success' => $user]);
             }
             else{
                 return response()->json(['error'=>'Unauthorised'], 401);
