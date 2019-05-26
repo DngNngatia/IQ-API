@@ -9,6 +9,6 @@ $factory->define(\App\Subject::class, function (Faker $faker,$topic_id) {
     return [
         'topic_id'=>$topic_id,
         'subject_name' => $faker->sentence,
-        'subject_avatar_url' => $faker->imageUrl(150,150,true,null,true)
+        'subject_avatar_url' => $faker->imageUrl(150, 150, 'cats', true, true, 'Faker')
     ];
 });
