@@ -19,21 +19,13 @@ class LoginController extends Controller
             'password' => 'required|string'
         ]);
         if (!$validator->fails()){
-            $user = User::where('email', $request->get('email'))->first();
-            if($user){
-                if(Hash::check( $request->get('password'), $user->password )== false){
-                    return response()->json(['message' => 'invalid password'], 401);
-                }else{
-                    $tokenResult = $user->createToken('Personal Access Token');
-                    $token = $tokenResult->token;
-                    $token->save();
-                    return response()->json([
-                        'access_token' => $tokenResult->accessToken,
-                        'token_type' => 'Bearer',
-                    ]);
-                }
-            }else{
-                return response()->json(['message' => 'User does not exists!!!'], 401);
+            if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+                $user = Auth::user();
+                $success['token'] =  $user->createToken('MyApp')-> accessToken;
+                return response()->json(['success' => $success], $this-> successStatus);
+            }
+            else{
+                return response()->json(['error'=>'Unauthorised'], 401);
             }
         }else{
             return response()->json([
