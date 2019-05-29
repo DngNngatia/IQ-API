@@ -14,16 +14,15 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => 'auth:api'], function(){
-
+    Route::get('/topics', 'ApiController@topics');
+    Route::get('/subjects/{topic_id}', 'ApiController@subjects');
+    Route::get('/questions/{subject_id}', 'ApiController@questions');
+    Route::get('/answers/{question_id}', 'ApiController@answers');
+    Route::get('/scores/{user_id}/subjects/{subject_id}', 'ApiController@scores');
+    Route::get('/subjects/score', 'ScoreController@subjects');
+    Route::post('/scores/{subject_id}/subjects', 'ScoreController@store');
 
 });
-Route::get('/topics', 'ApiController@topics');
-Route::get('/subjects/{topic_id}', 'ApiController@subjects');
-Route::get('/questions/{subject_id}', 'ApiController@questions');
-Route::get('/answers/{question_id}', 'ApiController@answers');
-Route::get('/scores/{user_id}/subjects/{subject_id}', 'ApiController@scores');
-Route::get('/subjects/score', 'ScoreController@subjects');
-Route::post('/scores/{subject_id}/subjects', 'ScoreController@store');
 Route::post('/login', 'LoginController@login');
 Route::post('/register', 'RegisterController@signup');
 
