@@ -18,6 +18,9 @@ class CreateSubjectsTable extends Migration
             $table->integer('topic_id')->unsigned();
             $table->string('subject_name');
             $table->string('subject_avatar_url');
+            $table->foreign('topic_id')
+                ->references('id')
+                ->on('topics');
             $table->timestamps();
         });
     }
