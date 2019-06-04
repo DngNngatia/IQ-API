@@ -5,6 +5,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -43,7 +44,7 @@ class Answer extends Resource
     {
         return [
             ID::make()->sortable(),
-            Textarea::make('Answer', 'answer')
+            Text::make('Answer', 'answer')
                 ->rules('required'),
             BelongsTo::make('question')
         ];

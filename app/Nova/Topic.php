@@ -46,7 +46,7 @@ class Topic extends Resource
             ID::make()->sortable(),
             Text::make('Name', 'topic_name')
                 ->rules('required'),
-            Image::make('Image', 'topic_avatar_url'),
+            Image::make('Image', 'topic_avatar_url')->onlyOnForms(),
             HasMany::make('subject')
         ];
     }

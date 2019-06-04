@@ -2,8 +2,10 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Score extends Resource
@@ -41,6 +43,8 @@ class Score extends Resource
     {
         return [
             ID::make()->sortable(),
+            Text::make('score'),
+            BelongsTo::make('user')
         ];
     }
 

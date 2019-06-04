@@ -47,7 +47,7 @@ class Subject extends Resource
             ID::make()->sortable(),
             Text::make('Name', 'subject_name')
                 ->rules('required'),
-            Image::make('Image', 'subject_avatar_url'),
+            Image::make('Image', 'subject_avatar_url')->onlyOnForms(),
             BelongsTo::make('Topic', 'topic'),
             HasMany::make('Questions', 'question')
         ];

@@ -47,7 +47,7 @@ class Question extends Resource
     {
         return [
             ID::make()->sortable(),
-            Textarea::make('Question', 'question')
+            Text::make('Question', 'question')
                 ->rules('required'),
             Number::make('Allocated Time', 'time_allocated'),
             Select::make('Correct Answer', 'correct_answer')->options([
