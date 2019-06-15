@@ -53,7 +53,7 @@ class Topic extends Resource
                     if ($request->hasFile("topic_avatar_url")) {
                         $extension = $request["topic_avatar_url"]->getClientOriginalExtension();
                         $fileName = md5(uniqid()) . '.' . $extension;
-                        $path = $request["topic_avatar_url"]->storeAs('/topic/', $fileName, [
+                        $path = $request["topic_avatar_url"]->storeAs('/topic', $fileName, [
                             'disk' => 'public',
                             'visibility' => 'public'
                         ]);

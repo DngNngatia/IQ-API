@@ -54,7 +54,7 @@ class Subject extends Resource
                     if ($request->hasFile("subject_avatar_url")) {
                         $extension = $request["subject_avatar_url"]->getClientOriginalExtension();
                         $fileName = md5(uniqid()) . '.' . $extension;
-                        $path = $request["subject_avatar_url"]->storeAs('/subject/', $fileName, [
+                        $path = $request["subject_avatar_url"]->storeAs('/subject', $fileName, [
                             'disk' => 'public',
                             'visibility' => 'public'
                         ]);
