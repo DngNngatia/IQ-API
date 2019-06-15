@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Facades\Storage;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -46,7 +48,19 @@ class Topic extends Resource
             ID::make()->sortable(),
             Text::make('Name', 'topic_name')
                 ->rules('required'),
-            Image::make('Image', 'topic_avatar_url')->onlyOnForms(),
+            File::make('Topic', 'topic_avatar_url')
+                ->store(function (Request $request, $model) {
+                    if ($request->hasFile("topic_avatar_url")) {
+                        $extension = $request["topic_avatar_url"]->getClientOriginalExtension();
+                        $fileName = md5(uniqid()) . '.' . $extension;
+                        $path = $request["topic_avatar_url"]->storeAs('/topic/', $fileName, [
+                            'disk' => 'public',
+                            'visibility' => 'public'
+                        ]);
+                        $model->topic_avatar_url = Storage::url($path);
+                        return $model->topic_avatar_url;
+                    }
+                })->onlyOnForms(),
             HasMany::make('subject')
         ];
     }
