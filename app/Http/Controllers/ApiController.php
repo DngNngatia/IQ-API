@@ -6,6 +6,7 @@ use App\Question;
 use App\Score;
 use App\Subject;
 use App\Topic;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -37,7 +38,7 @@ class ApiController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $request->user()->update([
+        User::findOrFail($request->user()->id)->update([
             'address' => $request->address,
             'phone' => $request->phone,
             'title' => $request->title,
