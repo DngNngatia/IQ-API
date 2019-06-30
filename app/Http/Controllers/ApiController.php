@@ -38,6 +38,7 @@ class ApiController extends Controller
 
     public function updateProfile(Request $request)
     {
+        dd($request->all());
         User::findOrFail($request->user()->id)->update([
             'address' => $request->address,
             'phone' => $request->phone,
