@@ -38,8 +38,8 @@ class ApiController extends Controller
 
     public function updateProfile(Request $request)
     {
-        dd(User::findOrFail($request->user()->id));
-        User::findOrFail($request->user()->id)->update([
+        $user = User::findOrFail($request->user()->id);
+        $user->update([
             'address' => $request->input("address"),
             'phone' => $request->input("phone"),
             'title' => $request->input("title"),
@@ -47,10 +47,10 @@ class ApiController extends Controller
         ]);
         if ($request->hasFile('profile_image')) {
             $path = $request->file('profile_image')->store('avatars');
-            $request->user()->update([
+            $user->update([
                 'profile_image' => $path
             ]);
         }
-        return response()->json(["message" => "success","data" => $request->user()]);
+        return response()->json(["message" => "success", "data" => $user]);
     }
 }
