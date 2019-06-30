@@ -38,12 +38,12 @@ class ApiController extends Controller
 
     public function updateProfile(Request $request)
     {
-        dd($request->all());
+        dd(User::findOrFail($request->user()->id));
         User::findOrFail($request->user()->id)->update([
-            'address' => $request->address,
-            'phone' => $request->phone,
-            'title' => $request->title,
-            'description' => $request->description
+            'address' => $request->input("address"),
+            'phone' => $request->input("phone"),
+            'title' => $request->input("title"),
+            'description' => $request->input("description")
         ]);
         if ($request->hasFile('profile_image')) {
             $path = $request->file('profile_image')->store('avatars');
