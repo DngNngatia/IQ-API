@@ -27,10 +27,9 @@ Route::group(['middleware' => 'auth:api'], function () {
             'message' => 'Successfully logged out'
         ]);
     });
-    Route::post('/user', function (Request $request) {
-        return $request->user();
-    });
-
+});
+Route::post('/user', function (Request $request) {
+    return $request->user();
 });
 Route::post('/login', 'LoginController@login');
 Route::post('/register', 'RegisterController@signup');
