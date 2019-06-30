@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Topic extends Resource
@@ -60,7 +61,9 @@ class Topic extends Resource
                         $model->topic_avatar_url = Storage::url($path);
                         return $model->topic_avatar_url;
                     }
-                })->onlyOnForms(),
+                })->rules('required')->onlyOnForms(),
+            Textarea::make('description')
+            ->rules('required'),
             HasMany::make('subject')
         ];
     }

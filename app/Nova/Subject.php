@@ -61,7 +61,7 @@ class Subject extends Resource
                         $model->subject_avatar_url = Storage::url($path);
                         return $model->subject_avatar_url;
                     }
-                })->onlyOnForms(),
+                })->onlyOnForms()->rules('required'),
             BelongsTo::make('Topic', 'topic'),
             HasMany::make('Questions', 'question')
         ];

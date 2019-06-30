@@ -43,7 +43,7 @@ class Score extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('score'),
+            Text::make('score')->rules('required'),
             BelongsTo::make('user')
         ];
     }

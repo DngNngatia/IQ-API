@@ -49,13 +49,13 @@ class Question extends Resource
             ID::make()->sortable(),
             Text::make('Question', 'question')
                 ->rules('required'),
-            Number::make('Allocated Time', 'time_allocated'),
+            Number::make('Allocated Time', 'time_allocated')->rules('required'),
             Select::make('Correct Answer', 'correct_answer')->options([
                 0 => 0,
                 1 => 1,
                 2 => 2,
                 3 => 3
-            ]),
+            ])->rules('required'),
             BelongsTo::make('subject'),
             HasMany::make('Answer','answer')
 
