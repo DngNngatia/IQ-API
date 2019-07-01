@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Score;
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ScoreController extends Controller
 {
@@ -18,7 +16,9 @@ class ScoreController extends Controller
             'complete' => true,
             'score' => $request->input("score")
         ]);
-
+        $score->subject->update([
+          'attempts'  => $score->attempts++
+        ]);
         return response()->json(["message" => 'success', "data" => $score]);
 
     }
