@@ -20,7 +20,7 @@ class ApiController extends Controller
 
     public function subjects($id)
     {
-        $subjects = Subject::where('topic_id', $id)->with('attempts')->paginate(3);
+        $subjects = Subject::where('topic_id', $id)->with('score')->paginate(3);
         return response()->json(["data" => $subjects], 200);
     }
 

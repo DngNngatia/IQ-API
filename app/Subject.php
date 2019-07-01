@@ -19,7 +19,7 @@ class Subject extends Model
         return $this->hasMany(Question::class);
     }
 
-    public function attempts(){
-        return Score::where('user_id',Auth::id())->where('subject_id',$this->topic_id)->attempts;
+    public function score(){
+        return $this->belongsTo(Score::class)->where('user_id',Auth::id())->where('subject_id',$this->topic_id)->first();
     }
 }
