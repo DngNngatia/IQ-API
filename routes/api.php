@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/scores/{user_id}/subjects/{subject_id}', 'ApiController@scores');
     Route::get('/subjects/score', 'ScoreController@subjects');
     Route::post('/scores/{subject_id}/subjects', 'ScoreController@store');
+    Route::get('/user/completed','ApiController@attempted');
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

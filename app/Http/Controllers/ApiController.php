@@ -40,6 +40,7 @@ class ApiController extends Controller
     {
         $user = User::findOrFail($request->user()->id);
         $user->update([
+            'name' => $request->input("name"),
             'address' => $request->input("address"),
             'phone' => $request->input("phone"),
             'title' => $request->input("title"),
@@ -52,5 +53,16 @@ class ApiController extends Controller
             ]);
         }
         return response()->json(["message" => "success", "data" => $user]);
+    }
+
+    public function attempted(Request $request)
+    {
+        $scores = collect($request->user()->score)->map(function ($score) {
+            return [
+                'score' => $score->score,
+                'subject' => $score->subject
+            ];
+        });
+        return response()->json(["message" => "success", "data" => $scores]);
     }
 }
