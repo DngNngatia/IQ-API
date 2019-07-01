@@ -20,8 +20,14 @@ class ApiController extends Controller
 
     public function subjects($id)
     {
-        $subjects = Subject::where('topic_id', $id)->paginate(3);
-        return response()->json(["data" => $subjects], 200);
+        $subjects = Subject::where('topic_id', $id)->get();
+        $results=collect($subjects)->map(function ($subject){
+           return [
+               $subject,
+               $subject->score
+           ];
+        })->forPage(1,3);
+        return response()->json(["data" => $results], 200);
     }
 
     public function questions($id)
