@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Subject extends Model
 {
@@ -16,5 +17,9 @@ class Subject extends Model
     public function question()
     {
         return $this->hasMany(Question::class);
+    }
+
+    public function attempts(){
+        return Score::where('user_id',Auth::id())->where('subject_id',$this->topic_id)->attempts;
     }
 }
