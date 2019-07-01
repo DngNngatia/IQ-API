@@ -14,13 +14,13 @@ class ApiController extends Controller
 {
     public function topics()
     {
-        $topics = Topic::get();
+        $topics = Topic::get()->paginate(3);
         return response()->json(["data" => $topics], 200);
     }
 
     public function subjects($id)
     {
-        $subjects = Subject::where('topic_id', $id)->get();
+        $subjects = Subject::where('topic_id', $id)->get()->paginate(3);
         return response()->json(["data" => $subjects], 200);
     }
 
