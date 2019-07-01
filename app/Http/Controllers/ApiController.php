@@ -27,6 +27,7 @@ class ApiController extends Controller
                 'topic_id' => $subject->topic_id,
                 'subject_name' => $subject->subject_name,
                 'subject_avatar_url' => $subject->subject_avatar_url,
+                'created_at' => $subject->created_at,
                 'score' => Score::where('user_id',$request->user()->id)->where('subject_id',$subject->id)->first()
             ];
         })->forPage(1, 3);
