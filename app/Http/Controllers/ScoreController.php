@@ -12,7 +12,7 @@ class ScoreController extends Controller
 
     public function store(Request $request, $subject_id)
     {
-        $score = Score::create([
+        $score = Score::createOrUpdate([
             'user_id' => $request->user()->id,
             'subject_id' => $subject_id,
             'complete' => true,
@@ -21,13 +21,5 @@ class ScoreController extends Controller
 
         return response()->json(["message" => 'success', "data" => $score]);
 
-    }
-
-    public function subjects()
-    {
-        $scores = collect(User::findOrFail(Auth::id())->score)->each(function ($score) {
-            return $score->subject;
-        })->toArray();
-        return response()->json(["message" => 'success', "data" => $scores]);
     }
 }
