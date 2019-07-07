@@ -73,7 +73,7 @@ class ApiController extends Controller
         $topics = collect(Topic::get())->filter(function ($topic) {
             return $topic->subject()->exists();
         });
-        return response()->json(["data" => $topics->slice(0,3), "message" => "available"]);
+        return response()->json(["data" => $topics->random(2), "message" => "available"]);
     }
     public function paginate($items, $perPage = 15, $page = null,
                              $baseUrl = null,
