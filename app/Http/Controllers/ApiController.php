@@ -68,13 +68,12 @@ class ApiController extends Controller
         return response()->json(["message" => "Search query is empty!!", "data" => $topic], 200);
     }
 
-    public function available(Request $request)
+    public function available()
     {
-        $user_id = $request->user()->id;
-        $topics = Topic::get()->filter(function ($topic) use ($user_id) {
+        $topics = collect(Topic::get())->filter(function ($topic) {
             return $topic->subject()->exists();
         });
-        dd($this->paginate($topics,3,1,"http://noprex.tk/api/topics/available",[]));
+        return response()->json(["data" => $topics->slice(0,3), "message" => "available"]);
     }
     public function paginate($items, $perPage = 15, $page = null,
                              $baseUrl = null,
