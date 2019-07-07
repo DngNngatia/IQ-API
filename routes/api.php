@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth:api'], function () {
             'message' => 'Successfully logged out'
         ]);
     });
-    Route::post('/user/update','ApiController@updateProfile');
+    Route::any('/user/update','ApiController@updateProfile');
 });
 
 Route::post('/login', 'LoginController@login');

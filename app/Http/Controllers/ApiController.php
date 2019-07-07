@@ -50,7 +50,7 @@ class ApiController extends Controller
         if($q != ""){
             $topics = Topic::where ( 'topic_name', 'LIKE', '%' . $q . '%' )->orWhere ( 'description', 'LIKE', '%' . $q . '%' )->paginate (3)->setPath ( '' );
             $pagination = $topics->appends ( array (
-                'q' => $request->input('query')
+                'query' => $request->input('query')
             ) );
             if (count ( $topics ) > 0){
                 return response()->json(["data" => $pagination], 200);
