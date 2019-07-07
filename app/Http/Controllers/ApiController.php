@@ -69,7 +69,7 @@ class ApiController extends Controller
     {
         $user_id = $request->user()->id;
         $topics = Topic::get()->filter(function ($topic) use ($user_id) {
-            return $topic->subject->exists();
+            return $topic->subject()->exists();
         });
         dd($topics);
     }
