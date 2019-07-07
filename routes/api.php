@@ -22,7 +22,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/subjects/score', 'ScoreController@subjects');
     Route::post('/scores/{subject_id}/subjects', 'ScoreController@store');
     Route::get('/user/completed','ApiController@attempted');
-    Route::post('/search/topic','ApiController@search');
+    Route::get('/search/topic/{query}','ApiController@search');
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

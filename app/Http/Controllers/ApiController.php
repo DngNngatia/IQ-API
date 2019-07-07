@@ -21,14 +21,14 @@ class ApiController extends Controller
     public function subjects(Request $request, $id)
     {
         $subjects = Subject::where('topic_id', $id)->get();
-        $results = collect($subjects)->map(function ($subject) use($request){
+        $results = collect($subjects)->map(function ($subject) use ($request) {
             return [
                 'id' => $subject->id,
                 'topic_id' => $subject->topic_id,
                 'subject_name' => $subject->subject_name,
                 'subject_avatar_url' => $subject->subject_avatar_url,
                 'created_at' => $subject->created_at,
-                'score' => Score::where('user_id',$request->user()->id)->where('subject_id',$subject->id)->first()
+                'score' => Score::where('user_id', $request->user()->id)->where('subject_id', $subject->id)->first()
             ];
         })->forPage(1, 3);
         return response()->json(["data" => $results], 200);
@@ -45,22 +45,23 @@ class ApiController extends Controller
         $score = Score::where('user_id', $user_id)->where('subject_id', $subject_id)->with('user')->first();
         return response()->json(["data" => $score], 200);
     }
-    public function search(Request $request){
-        $q = $request->input('query');
-        if($q != ""){
-            $topics = Topic::where ( 'topic_name', 'LIKE', '%' . $q . '%' )->orWhere ( 'description', 'LIKE', '%' . $q . '%' )->paginate (3)->setPath ( '' );
-            $pagination = $topics->appends ( array (
-                'query' => $request->input('query')
-            ) );
-            if (count ( $topics ) > 0){
-                return response()->json(["data" => $pagination], 200);
-            }
-            else{
-                return response()->json(["data" => [],"message" => "No results found"], 200);
+
+    public function search($query)
+    {
+        $topics = Topic::paginate(3);
+        if ($query != "") {
+            $topics = Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->paginate(3)->setPath('');
+            $pagination = $topics->appends(array(
+                'query' => $query
+            ));
+            if (count($topics) > 0) {
+                return response()->json(["data" => $pagination, "message" => count($topics) . " items found!"], 200);
+            } else {
+                return response()->json(["data" => $topics, "message" => "No results found"], 200);
             }
 
         }
-        return response()->json(["message"  => "Search query is empty!!"], 403);
+        return response()->json(["message" => "Search query is empty!!", "data" => $topics], 200);
     }
 
     public function updateProfile(Request $request)
