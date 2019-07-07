@@ -8,6 +8,9 @@ use App\Subject;
 use App\Topic;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class ApiController extends Controller
@@ -71,8 +74,28 @@ class ApiController extends Controller
         $topics = Topic::get()->filter(function ($topic) use ($user_id) {
             return $topic->subject()->exists();
         });
-        dd($topics);
+        dd($this->paginate($topics,3,1,"http://noprex.tk/api/topics/available",[]));
     }
+    public function paginate($items, $perPage = 15, $page = null,
+                             $baseUrl = null,
+                             $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+        $items = $items instanceof Collection ?
+            $items : Collection::make($items);
+
+        $lap = new LengthAwarePaginator($items->forPage($page, $perPage),
+            $items->count(),
+            $perPage, $page, $options);
+
+        if ($baseUrl) {
+            $lap->setPath($baseUrl);
+        }
+
+        return $lap;
+    }
+
 
     public function updateProfile(Request $request)
     {
