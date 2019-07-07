@@ -65,6 +65,18 @@ class ApiController extends Controller
         return response()->json(["message" => "Search query is empty!!", "data" => $topic], 200);
     }
 
+    public function available(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $topics = Topic::get()->filter(function ($topic) use ($user_id) {
+            return $topic->subject->exists() &&
+                $topic->subject->filter(function ($subject) use ($user_id) {
+                    return $subject->score->where('user_id', $user_id)->exists();
+                });
+        });
+        dd($topics);
+    }
+
     public function updateProfile(Request $request)
     {
         $user = User::findOrFail($request->user()->id);
