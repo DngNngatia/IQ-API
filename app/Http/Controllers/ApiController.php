@@ -45,6 +45,23 @@ class ApiController extends Controller
         $score = Score::where('user_id', $user_id)->where('subject_id', $subject_id)->with('user')->first();
         return response()->json(["data" => $score], 200);
     }
+    public function search(Request $request){
+        $q = $request->input('query');
+        if($q != ""){
+            $topics = Topic::where ( 'topic_name', 'LIKE', '%' . $q . '%' )->orWhere ( 'description', 'LIKE', '%' . $q . '%' )->paginate (3)->setPath ( '' );
+            $pagination = $topics->appends ( array (
+                'q' => $request->input('query')
+            ) );
+            if (count ( $topics ) > 0){
+                return response()->json(["data" => $pagination], 200);
+            }
+            else{
+                return response()->json(["data" => [],"message" => "No results found"], 200);
+            }
+
+        }
+        return response()->json(["message"  => "Search query is empty!!"], 403);
+    }
 
     public function updateProfile(Request $request)
     {
