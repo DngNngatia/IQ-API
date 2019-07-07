@@ -48,7 +48,7 @@ class ApiController extends Controller
 
     public function search($query)
     {
-        $topics = Topic::paginate(3);
+        $topic = Topic::paginate(3);
         if ($query != "") {
             $topics = Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->paginate(3)->setPath('');
             $pagination = $topics->appends(array(
@@ -57,11 +57,11 @@ class ApiController extends Controller
             if (count($topics) > 0) {
                 return response()->json(["data" => $pagination, "message" => count($topics) . " items found!"], 200);
             } else {
-                return response()->json(["data" => $topics, "message" => "No results found"], 200);
+                return response()->json(["data" => $topic, "message" => "No results found"], 200);
             }
 
         }
-        return response()->json(["message" => "Search query is empty!!", "data" => $topics], 200);
+        return response()->json(["message" => "Search query is empty!!", "data" => $topic], 200);
     }
 
     public function updateProfile(Request $request)
