@@ -50,12 +50,13 @@ class ApiController extends Controller
     {
         $topic = Topic::paginate(3);
         if ($query != "") {
+            $count = count(Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->get());
             $topics = Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->paginate(3)->setPath('');
             $pagination = $topics->appends(array(
                 'query' => $query
             ));
             if (count($topics) > 0) {
-                return response()->json(["data" => $pagination, "message" => count($topics) . " items found!"], 200);
+                return response()->json(["data" => $pagination, "message" => $count . " items found!"], 200);
             } else {
                 return response()->json(["data" => $topic, "message" => "No results found"], 200);
             }
