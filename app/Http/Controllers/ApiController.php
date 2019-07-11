@@ -73,7 +73,7 @@ class ApiController extends Controller
         $subjects = collect(Subject::get())->filter(function ($subject) use ($request) {
             return count(
                     collect($subject->score)->filter(function ($score) use ($request) {
-                        return $score->user_id !== $request->user()->id;
+                        return $score->user_id == $request->user()->id;
                     })
                 ) < 1;
         });
