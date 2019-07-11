@@ -68,38 +68,21 @@ class ApiController extends Controller
         return response()->json(["message" => "Search query is empty!!", "data" => $topic], 200);
     }
 
-    public function available()
+    public function available(Request $request)
     {
-        $topics = collect(Topic::get())->filter(function ($topic) {
-            return $topic->subject()->exists();
+        $subjects = collect(Subject::get())->filter(function ($subject) use ($request) {
+            return count(
+                    collect($subject->score)->filter(function ($score) use ($request) {
+                        return $score->user_id !== $request->user()->id;
+                    })
+                ) < 1;
         });
-        return response()->json(["data" => $topics->random(2), "message" => "available"]);
+        return response()->json(["message" => "available", "data" => $subjects], 200);
     }
-    public function paginate($items, $perPage = 15, $page = null,
-                             $baseUrl = null,
-                             $options = [])
-    {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-
-        $items = $items instanceof Collection ?
-            $items : Collection::make($items);
-
-        $lap = new LengthAwarePaginator($items->forPage($page, $perPage),
-            $items->count(),
-            $perPage, $page, $options);
-
-        if ($baseUrl) {
-            $lap->setPath($baseUrl);
-        }
-
-        return $lap;
-    }
-
 
     public function updateProfile(Request $request)
     {
-        $user = User::findOrFail($request->user()->id);
-        $user->update([
+        $request->user()->update([
             'name' => $request->input("name"),
             'address' => $request->input("address"),
             'phone' => $request->input("phone"),
@@ -108,11 +91,11 @@ class ApiController extends Controller
         ]);
         if ($request->hasFile('profile_image')) {
             $path = $request->file('profile_image')->store('avatars');
-            $user->update([
+            $request->user()->update([
                 'profile_image' => $path
             ]);
         }
-        return response()->json(["message" => "success", "data" => $user]);
+        return response()->json(["message" => "success", "data" => $request->user()]);
     }
 
     public function attempted(Request $request)
