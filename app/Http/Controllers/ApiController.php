@@ -71,8 +71,12 @@ class ApiController extends Controller
     public function available(Request $request)
     {
         $subjects = collect(Subject::get())->filter(function ($subject) use ($request) {
-            return $subject->score;
-        });
+            return count(
+                    collect($subject->score)->filter(function ($score) use ($request) {
+                        return $score->user_id == $request->user()->id;
+                    })
+                ) < 1;
+        })->values();
         return response()->json(["message" => "available", "data" => $subjects], 200);
     }
 
