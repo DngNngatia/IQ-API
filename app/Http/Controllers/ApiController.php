@@ -31,6 +31,9 @@ class ApiController extends Controller
                 'subject_name' => $subject->subject_name,
                 'subject_avatar_url' => $subject->subject_avatar_url,
                 'created_at' => $subject->created_at,
+                'likes' => $subject->likes,
+                'dislikes' => $subject->dislikes,
+                'comments' => $subject->comments,
                 'score' => Score::where('user_id', $request->user()->id)->where('subject_id', $subject->id)->first()
             ];
         })->forPage(1, 3);
@@ -53,13 +56,13 @@ class ApiController extends Controller
     {
         $topic = Topic::paginate(3);
         if ($query != "") {
-            $count = count(Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->get());
-            $topics = Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->paginate(3)->setPath('');
+            $counts = Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->get();
+            $topics = $counts->paginate(3)->setPath('');
             $pagination = $topics->appends(array(
                 'query' => $query
             ));
             if (count($topics) > 0) {
-                return response()->json(["data" => $pagination, "message" => $count . " items found!"], 200);
+                return response()->json(["data" => $pagination, "message" => count($counts) . " items found!"], 200);
             } else {
                 return response()->json(["data" => $topic, "message" => "No results found"], 200);
             }

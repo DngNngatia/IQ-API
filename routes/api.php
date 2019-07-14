@@ -24,6 +24,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/user/completed','ApiController@attempted');
     Route::get('/search/topic/{query}','ApiController@search');
     Route::get('/topics/available','ApiController@available');
+    Route::get('/like/{subject_id}','LikeController@like');
+    Route::get('/dislike/{subject_id}','DislikeController@dislike');
+    Route::post('/comment/{subject_id}','CommentController@store');
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
