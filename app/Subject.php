@@ -31,11 +31,11 @@ class Subject extends Model
 
     public function likes()
     {
-        return $this->hasMany(Like::class)->count();
+        return $this->hasMany(Like::class);
     }
 
     public function dislikes()
     {
-        return $this->hasMany(Dislike::class)->count();
+        return $this->hasMany(Dislike::class);
     }
 }

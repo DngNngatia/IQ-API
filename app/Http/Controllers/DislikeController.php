@@ -28,8 +28,9 @@ class DislikeController extends Controller
                 'subject_name' => $subject->subject_name,
                 'subject_avatar_url' => $subject->subject_avatar_url,
                 'created_at' => $subject->created_at,
-                'likes' => $subject->likes,
-                'dislikes' => $subject->dislikes,
+                'likes' => count($subject->likes),
+                'dislikes' => count($subject->dislikes),
+                'no_comments' => count($subject->comments),
                 'comments' => $subject->comments,
                 'score' => Score::where('user_id', $request->user()->id)->where('subject_id', $subject->id)->first()
             ];
