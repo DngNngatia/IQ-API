@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Dislike;
 use App\Like;
 use App\Score;
 use App\Subject;
@@ -10,7 +11,10 @@ use Illuminate\Http\Request;
 class LikeController extends Controller
 {
     public function like(Request $request,$subject_id){
-        Like::createOrUpdate([
+        if(Dislike::where('user_id',$request->user()->id)->where('subject_id',$subject_id)->exists()){
+            Dislike::where('user_id',$request->user()->id)->where('subject_id',$subject_id)->delete();
+        }
+        Like::updateOrCreate([
             'user_id' => $request->user()->id,
             'subject_id' => $subject_id,
             'liked' => true

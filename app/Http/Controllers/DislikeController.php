@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dislike;
+use App\Like;
 use App\Score;
 use App\Subject;
 use Illuminate\Http\Request;
@@ -11,7 +12,10 @@ class DislikeController extends Controller
 {
     public function dislike(Request $request, $subject_id)
     {
-        Dislike::createOrUpdate([
+        if(Like::where('user_id',$request->user()->id)->where('subject_id',$subject_id)->exists()){
+            Like::where('user_id',$request->user()->id)->where('subject_id',$subject_id)->delete();
+        }
+        Dislike::updateOrCreate([
             'user_id' => $request->user()->id,
             'subject_id' => $subject_id,
             'liked' => true
