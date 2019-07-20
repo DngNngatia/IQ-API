@@ -58,7 +58,7 @@ class ApiController extends Controller
         $topic = Topic::paginate(3);
         if ($query != "") {
             $counts = Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->get();
-            $topics = $counts->paginate(3)->setPath('');
+            $topics = Topic::where('topic_name', 'LIKE', '%' . $query . '%')->orWhere('description', 'LIKE', '%' . $query . '%')->paginate(3)->setPath('');
             $pagination = $topics->appends(array(
                 'query' => $query
             ));
