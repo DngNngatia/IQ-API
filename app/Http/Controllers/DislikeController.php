@@ -31,7 +31,7 @@ class DislikeController extends Controller
                 'likes' => count($subject->likes),
                 'dislikes' => count($subject->dislikes),
                 'no_comments' => count($subject->comments),
-                'comments' => $subject->comments,
+                'comments' => $subject->comments->with('user'),
                 'score' => Score::where('user_id', $request->user()->id)->where('subject_id', $subject->id)->first()
             ];
         })->forPage(1, 3);
