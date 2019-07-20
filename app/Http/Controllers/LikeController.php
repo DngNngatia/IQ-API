@@ -30,7 +30,14 @@ class LikeController extends Controller
                 'likes' => count($subject->likes),
                 'dislikes' => count($subject->dislikes),
                 'no_comments' => count($subject->comments),
-                'comments' => $subject->comments->with('user'),
+                'comments' => $subject->comments->map(function ($comment) {
+                    return [
+                        'subject_id' => $comment->subject_id,
+                        'comment' => $comment->comment,
+                        'commentable_type' => $comment->comment,
+                        'user' => $comment->user
+                    ];
+                }),
                 'score' => Score::where('user_id', $request->user()->id)->where('subject_id', $subject->id)->first()
             ];
         })->forPage(1, 3);
