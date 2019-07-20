@@ -10,12 +10,12 @@ class RegisterController extends Controller
 {
     public function signup(Request $request)
     {
-        $validator=Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string'
         ]);
-        if (!$validator->fails()){
+        if (!$validator->fails()) {
             $user = new User([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -26,12 +26,18 @@ class RegisterController extends Controller
                 'message' => 'Successfully created user!',
                 'data' => $user
             ], 200);
-        }else{
+        } else {
             return response()->json([
                 'message' => 'error',
                 'data' => $validator->errors()
             ], 500);
         }
 
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->user()->delete();
+        return response()->json(['message' => 'profile deleted'], 200);
     }
 }

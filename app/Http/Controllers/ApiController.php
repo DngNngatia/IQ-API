@@ -92,10 +92,15 @@ class ApiController extends Controller
             'title' => $request->input("title"),
             'description' => $request->input("description")
         ]);
-        if ($request->hasFile('profile_image')) {
-            $path = $request->file('profile_image')->store('avatars');
+        if ($request->hasFile("profile_image")) {
+            $extension = $request["profile_image"]->getClientOriginalExtension();
+            $fileName = md5(uniqid()) . '.' . $extension;
+            $path = $request["profile_image"]->storeAs('/topic', $fileName, [
+                'disk' => 'public',
+                'visibility' => 'public'
+            ]);
             $request->user()->update([
-                'profile_image' => $path
+                'profile_image' => Storage::url($path)
             ]);
         }
         return response()->json(["message" => "success", "data" => $request->user()]);
