@@ -49,6 +49,7 @@ class Topic extends Resource
             ID::make()->sortable(),
             Text::make('Name', 'topic_name')
                 ->rules('required'),
+            Text::make('link'),
             File::make('Topic', 'topic_avatar_url')
                 ->store(function (Request $request, $model) {
                     if ($request->hasFile("topic_avatar_url")) {

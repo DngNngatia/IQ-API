@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
 {
-    protected $fillable = ['topic_name', 'topic_avatar_url'];
+    protected $fillable = ['topic_name', 'topic_avatar_url', 'link'];
 
     public function subject()
     {
