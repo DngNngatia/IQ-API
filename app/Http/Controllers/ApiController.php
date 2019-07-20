@@ -95,7 +95,7 @@ class ApiController extends Controller
         if ($request->hasFile("profile_image")) {
             $extension = $request["profile_image"]->getClientOriginalExtension();
             $fileName = md5(uniqid()) . '.' . $extension;
-            $path = $request["profile_image"]->storeAs('/topic', $fileName, [
+            $path = $request["profile_image"]->storeAs('/profile', $fileName, [
                 'disk' => 'public',
                 'visibility' => 'public'
             ]);
