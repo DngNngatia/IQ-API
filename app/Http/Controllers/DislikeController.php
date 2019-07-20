@@ -20,7 +20,7 @@ class DislikeController extends Controller
             'subject_id' => $subject_id,
             'liked' => true
         ]);
-        $subjects = Subject::where('topic_id', Subject::where('id', $subject_id)->first()->subject->id)->get();
+        $subjects = Subject::where('topic_id',Subject::where('id',$subject_id)->first()->topic_id)->get();
         $results = collect($subjects)->map(function ($subject) use ($request) {
             return [
                 'id' => $subject->id,
