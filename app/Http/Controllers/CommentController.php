@@ -16,7 +16,7 @@ class CommentController extends Controller
             'comment' => $request->comment,
         ]);
         Subject::findOrFail($subject_id)->comments()->save($comment);
-        $subjects = Subject::where('topic_id',Subject::where('id',$subject_id)->first()->subject->id)->get();
+        $subjects = Subject::where('topic_id',Subject::where('id',$subject_id)->first()->topic_id)->get();
         $results = collect($subjects)->map(function ($subject) use ($request) {
             return [
                 'id' => $subject->id,
@@ -24,9 +24,10 @@ class CommentController extends Controller
                 'subject_name' => $subject->subject_name,
                 'subject_avatar_url' => $subject->subject_avatar_url,
                 'created_at' => $subject->created_at,
-                'likes' => $subject->likes,
-                'dislikes' => $subject->dislikes,
-                'comments' => $subject->comments,
+                'likes' => count($subject->likes),
+                'dislikes' => count($subject->dislikes),
+                'no_comments' => count($subject->comments),
+                'comments' => $subject->comments->with('user'),
                 'score' => Score::where('user_id', $request->user()->id)->where('subject_id', $subject->id)->first()
             ];
         })->forPage(1, 3);
