@@ -9,19 +9,6 @@ class Subject extends Model
 {
     protected $fillable = ['topic_id', 'subject_name', 'subject_avatar_url'];
 
-    protected static function boot()
-    {
-        static::deleting(function ($subject) {
-            collect($subject->question)->each(function ($question) {
-                collect($question->answer)->each(function ($answer){
-                    $answer->delete();
-                });
-                $question->delete();
-            });
-            $subject->delete();
-        });
-    }
-
     public function topic()
     {
         return $this->belongsTo(Topic::class);

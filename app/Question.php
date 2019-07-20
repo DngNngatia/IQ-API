@@ -8,14 +8,6 @@ class Question extends Model
 {
     protected $fillable = ['subject_id', 'question', 'time_allocated'];
 
-    protected static function boot()
-    {
-        static::deleting(function ($question) {
-            collect($question->answer)->each(function ($answer) {
-                $answer->delete();
-            });
-        });
-    }
 
     public function subject()
     {
