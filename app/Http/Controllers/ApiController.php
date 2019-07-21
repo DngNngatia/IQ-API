@@ -18,7 +18,7 @@ class ApiController extends Controller
     public function topics()
     {
         $topics = Topic::paginate(3);
-        return response()->json(["data" => $topics, "message" => 'success'], 200);
+        return response()->json(["data" => $topics, "message" => 'Noprex'], 200);
     }
 
     public function subjects(Request $request, $id)
