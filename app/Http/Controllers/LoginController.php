@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Notifications\PasswordReset;
 use App\User;
 use Carbon\Carbon;
+use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -61,6 +62,9 @@ class LoginController extends Controller
                             'message' => 'Otp sent to email',
                         ], 200);
                 } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => $e,
+                    ], 500);
                 }
             } else {
                 return response()->json([
