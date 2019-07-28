@@ -66,6 +66,9 @@ class LoginController extends Controller
                         ], 500);
                     }
                 } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'Oops!! could not send Email',
+                    ], 500);
                 }
             } else {
                 return response()->json([
