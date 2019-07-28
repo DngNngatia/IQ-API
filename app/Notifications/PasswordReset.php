@@ -42,7 +42,6 @@ class PasswordReset extends Notification
     public function toMail($notifiable)
     {
         $data = array('name'=> $notifiable->name, "otp" => $notifiable->otp);
-        dd($data);
         Mail::send('mail', $data, function ($message) use ($notifiable) {
             $message->to($notifiable->email)->subject
             ('Reset Otp Message');
