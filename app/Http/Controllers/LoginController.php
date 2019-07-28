@@ -56,15 +56,10 @@ class LoginController extends Controller
                     $user->update([
                         'otp' => $otp
                     ]);
-                    if ($user->notify(new PasswordReset())) {
+                    $user->notify(new PasswordReset());
                         return response()->json([
                             'message' => 'Otp sent to email',
                         ], 200);
-                    } else {
-                        return response()->json([
-                            'message' => 'Oops!! could not send Email',
-                        ], 500);
-                    }
                 } catch (\Exception $e) {
                 }
             } else {
