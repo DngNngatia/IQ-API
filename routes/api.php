@@ -42,5 +42,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::post('/login', 'LoginController@login');
 Route::post('/register', 'RegisterController@signup');
+Route::post('/reset/password','LoginController@email');
+Route::post('/otp','LoginController@resetPassword');
+
 
 
