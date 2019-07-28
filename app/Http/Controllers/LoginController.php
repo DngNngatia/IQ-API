@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Notifications\PasswordReset;
 use App\User;
 use Carbon\Carbon;
-use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -52,14 +51,22 @@ class LoginController extends Controller
         } else {
             if (User::where('email', $request->input('email'))->exists()) {
                 $user = User::where('email', $request->input('email'))->first();
+                try {
                     $otp = random_int(100000, 999999);
                     $user->update([
                         'otp' => $otp
                     ]);
-                    $user->notify(new PasswordReset());
+                    if ($user->notify(new PasswordReset())) {
                         return response()->json([
                             'message' => 'Otp sent to email',
                         ], 200);
+                    } else {
+                        return response()->json([
+                            'message' => 'Oops!! could not send Email',
+                        ], 500);
+                    }
+                } catch (\Exception $e) {
+                }
             } else {
                 return response()->json([
                     'message' => 'No such email in our records!!',
@@ -67,16 +74,14 @@ class LoginController extends Controller
             }
         }
     }
-
-    public function resetPassword(Request $request)
-    {
-        $user = User::where('email', $request->input('email'))->first();
-        if ($user->otp === $request->input('otp')) {
+    public function resetPassword(Request $request){
+        $user = User::where('email',$request->input('email'))->first();
+        if ($user->otp === $request->input('otp')){
             $user->fill(['password' => Hash::make($request->input('password'))])->save();
             return response()->json([
                 'message' => 'Password changed successfully',
             ], 200);
-        } else {
+        }else{
             return response()->json([
                 'message' => 'Invalid otp',
             ], 404);
