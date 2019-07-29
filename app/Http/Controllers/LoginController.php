@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMailable;
 use App\Notifications\PasswordReset;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -55,7 +57,8 @@ class LoginController extends Controller
                     $user->update([
                         'otp' => $otp
                     ]);
-                    if ($user->notify(new PasswordReset())) {
+                $data = ['name' => $user->name, "otp" => $user->otp, 'email' => $user->email];
+                    if (Mail::to($data['email'])->send(new SendMailable($data))) {
                         return response()->json([
                             'message' => 'Otp sent to email',
                         ], 200);
