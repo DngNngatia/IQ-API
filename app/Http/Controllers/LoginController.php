@@ -51,7 +51,6 @@ class LoginController extends Controller
         } else {
             if (User::where('email', $request->input('email'))->exists()) {
                 $user = User::where('email', $request->input('email'))->first();
-                try {
                     $otp = random_int(100000, 999999);
                     $user->update([
                         'otp' => $otp
@@ -65,11 +64,6 @@ class LoginController extends Controller
                             'message' => 'Oops!! could not send Email',
                         ], 500);
                     }
-                } catch (\Exception $e) {
-                    return response()->json([
-                        'message' => 'Oops!! could not send Email',
-                    ], 500);
-                }
             } else {
                 return response()->json([
                     'message' => 'No such email in our records!!',
