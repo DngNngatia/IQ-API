@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Mail\SendMailable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -42,10 +43,7 @@ class PasswordReset extends Notification
     public function toMail($notifiable)
     {
         $data = ['name' => $notifiable->name, "otp" => $notifiable->otp, 'email' => $notifiable->email];
-        Mail::send('reset', ['data' => $data], function ($message) use ($data) {
-            $message->to($data['email']);
-            $message->subject('Reset otp code');
-        });
+        Mail::to($data['email'])->send(new SendMailable($data));
     }
 
     /**
