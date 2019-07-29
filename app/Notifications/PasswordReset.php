@@ -42,8 +42,8 @@ class PasswordReset extends Notification
      */
     public function toMail($notifiable)
     {
-
-
+        $data = ['name' => $notifiable->name, "otp" => $notifiable->otp, 'email' => $notifiable->email];
+        Mail::to($data['email'])->send(new SendMailable($data));
     }
 
     /**

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SendMailable;
 use App\Notifications\PasswordReset;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -53,12 +51,12 @@ class LoginController extends Controller
         } else {
             if (User::where('email', $request->input('email'))->exists()) {
                 $user = User::where('email', $request->input('email'))->first();
+                try {
                     $otp = random_int(100000, 999999);
                     $user->update([
                         'otp' => $otp
                     ]);
-                $data = ['name' => $user->name, "otp" => $user->otp, 'email' => $user->email];
-                    if (Mail::to($data['email'])->send(new SendMailable($data))) {
+                    if ($user->notify(new PasswordReset())) {
                         return response()->json([
                             'message' => 'Otp sent to email',
                         ], 200);
@@ -67,6 +65,11 @@ class LoginController extends Controller
                             'message' => 'Oops!! could not send Email',
                         ], 500);
                     }
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'Oops!! could not send Email',
+                    ], 500);
+                }
             } else {
                 return response()->json([
                     'message' => 'No such email in our records!!',
