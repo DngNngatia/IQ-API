@@ -41,11 +41,10 @@ class PasswordReset extends Notification
      */
     public function toMail($notifiable)
     {
-        $data = ['name'=> $notifiable->name, "otp" => $notifiable->otp];
-        Mail::send('mails.reset',['data' => $data], function ($message) use ($notifiable) {
-            $message->to($notifiable->email)->subject
-            ('Reset Otp Message');
-            $message->from('no-reply@noprext.team.com', 'Nopex');
+        $data = ['name' => $notifiable->name, "otp" => $notifiable->otp, 'email' => $notifiable->email];
+        Mail::send('reset', ['data' => $data], function ($message) use ($data) {
+            $message->to($data['email']);
+            $message->subject('Reset otp code');
         });
     }
 
