@@ -16,4 +16,4 @@
 //});
 //
 ////Auth::routes();
-
+Route::get('privacy-policy','PrivacyPolicy@show');
