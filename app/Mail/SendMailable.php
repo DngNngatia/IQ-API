@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class SendMailable extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
+
     public $data;
 
     /**
@@ -19,6 +20,7 @@ class SendMailable extends Mailable implements ShouldQueue
      */
     public function __construct($data)
     {
+        dd($data);
         $this->data = $data;
     }
 

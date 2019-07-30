@@ -43,11 +43,7 @@ class PasswordReset extends Notification
     public function toMail($notifiable)
     {
         $data = ['name' => $notifiable->name, "otp" => $notifiable->otp, 'email' => $notifiable->email];
-        Mail::raw('Your reset code is : ' . $data['otp'], $data, function ($message) use ($data) {
-            $message->to($data['email'], $data['name'])->subject
-            ('Reset Otp');
-            $message->from('noprex@no-reply.com', 'Noprex Team');
-        });
+        Mail::to($data['email'])->send(new SendMailable($data));
     }
 
     /**
