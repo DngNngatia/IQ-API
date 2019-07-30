@@ -5,9 +5,8 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendMailable extends Mailable implements ShouldQueue
+class SendMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +29,9 @@ class SendMailable extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from('example@example.com')
-            ->markdown('mail');
+        return $this->from('noprex.team@gmail.com')
+        ->view('emails.mail')
+        ->subject('Reset Otp')
+        ->with(['data' => $this->data]);
     }
 }
