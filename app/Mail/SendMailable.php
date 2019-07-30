@@ -20,7 +20,6 @@ class SendMailable extends Mailable implements ShouldQueue
      */
     public function __construct($data)
     {
-        dd($data);
         $this->data = $data;
     }
 
