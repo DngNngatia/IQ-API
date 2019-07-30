@@ -31,6 +31,6 @@ class SendMailable extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->from('example@example.com')
-        ->view('mail');
+            ->markdown('mail');
     }
 }

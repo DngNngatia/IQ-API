@@ -1,4 +1,12 @@
-<h1>Hi, {{ $data['name']}}</h1>
-<p>Request to reset your password has been received</p>
-<p>Otp: {{$data['otp']}}</p>
-<p>If you did no request to reset your password please ignore this message, Regards Noprex Team</p>
+@component('mail::message')
+    # Order Shipped
+
+    Your order has been shipped!
+
+    @component('mail::button', ['url' => 'fucku.com'])
+        View Order
+    @endcomponent
+
+    Thanks,<br>
+    {{ config('app.name') }}
+@endcomponent
