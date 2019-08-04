@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -55,7 +56,11 @@ class LoginController extends Controller
                 $user->update([
                     'otp' => $otp
                 ]);
-                $user->notify(new PasswordReset());
+                $data = ['name' => $user->name, "otp" => $user->otp, 'email' => $user->email];
+                Mail::send('emails.mail',['data' => $data], function($message) use($data) {
+                    $message->to($data['email'], $data['name'])
+                        ->subject('Otp code reset');
+                });
                 return response()->json([
                     'message' => 'Otp sent to email',
                 ], 200);
