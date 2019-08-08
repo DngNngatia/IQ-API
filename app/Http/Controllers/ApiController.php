@@ -87,7 +87,7 @@ class ApiController extends Controller
                         return $score->user_id == $request->user()->id;
                     })
                 ) < 1;
-        })->toArray();
+        });
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 3;
         $currentPageItems = $subjects->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
