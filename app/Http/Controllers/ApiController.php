@@ -87,14 +87,10 @@ class ApiController extends Controller
                         return $score->user_id == $request->user()->id;
                     })
                 ) < 1;
-        })->values();
+        })->paginate(3, 1, [
+            'path' => ''
+        ])->toArray();
         return response()->json(["message" => "available", "data" => $this->paginate($subjects)], 200);
-    }
-    public function paginate($items, $perPage = 3, $page = null, $options = [])
-    {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
     public function updateProfile(Request $request)
