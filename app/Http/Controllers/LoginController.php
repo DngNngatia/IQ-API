@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Notifications\PasswordReset;
+use \Illuminate\Support\Str;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -75,7 +75,7 @@ class LoginController extends Controller
     public function resetPassword(Request $request)
     {
         $user = User::where('email', $request->input('email'))->first();
-        if ($user->otp === $request->input('otp')) {
+        if (Str::equals($user->otp,$request->input('otp'))) {
             $user->fill(['password' => Hash::make($request->input('password'))])->save();
             return response()->json([
                 'message' => 'Password changed successfully',
