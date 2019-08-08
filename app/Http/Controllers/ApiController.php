@@ -124,4 +124,13 @@ class ApiController extends Controller
         });
         return response()->json(["message" => "success", "data" => $scores]);
     }
+
+    public function deleteProfile(Request $request)
+    {
+        $request->user()->score->each(function ($score){
+            $score->delete();
+        });
+        $request->user()->delete();
+        return response()->json(['message' => 'profile deleted'], 200);
+    }
 }

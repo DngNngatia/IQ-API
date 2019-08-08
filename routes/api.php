@@ -27,10 +27,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/like/{subject_id}','LikeController@like');
     Route::get('/dislike/{subject_id}','DislikeController@dislike');
     Route::post('/comment/{subject_id}','CommentController@store');
-    Route::get('/profile/delete','RegisterController@destroy');
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::post('/profile/delete','ApiController@deleteProfile');
     Route::post('/logout', function (Request $request) {
         $request->user()->token()->revoke();
         return response()->json([
