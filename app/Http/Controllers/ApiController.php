@@ -90,7 +90,7 @@ class ApiController extends Controller
         });
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 3;
-        $currentPageItems = $subjects->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
+        $currentPageItems = $subjects->slice(($currentPage * $perPage) - $perPage, $perPage)->values();
         $paginatedItems= new LengthAwarePaginator($currentPageItems , count($subjects), $perPage);
         $paginatedItems->setPath($request->url());
         return response()->json(["message" => "available", "data" => $paginatedItems], 200);
