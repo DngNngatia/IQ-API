@@ -93,6 +93,7 @@ class ApiController extends Controller
         $currentPageItems = $subjects->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
         $paginatedItems= new LengthAwarePaginator($currentPageItems , count($subjects), $perPage);
         $paginatedItems->setPath($request->url());
+        dd($paginatedItems);
         return response()->json(["message" => "available", "data" => $paginatedItems->values()], 200);
     }
 
