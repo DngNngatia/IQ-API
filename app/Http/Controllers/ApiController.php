@@ -87,10 +87,13 @@ class ApiController extends Controller
                         return $score->user_id == $request->user()->id;
                     })
                 ) < 1;
-        })->paginate(3, 1, [
-            'path' => ''
-        ])->toArray();
-        return response()->json(["message" => "available", "data" => $this->paginate($subjects)], 200);
+        })->values();
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 3;
+        $currentPageItems = $subjects->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
+        $paginatedItems= new LengthAwarePaginator($currentPageItems , count($subjects), $perPage);
+        $paginatedItems->setPath($request->url());
+        return response()->json(["message" => "available", "data" => $paginatedItems], 200);
     }
 
     public function updateProfile(Request $request)
