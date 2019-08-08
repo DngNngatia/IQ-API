@@ -127,8 +127,17 @@ class ApiController extends Controller
 
     public function deleteProfile(Request $request)
     {
-        $request->user()->score->each(function ($score){
+        $request->user()->score->each(function ($score) {
             $score->delete();
+        });
+        $request->user()->likes->each(function ($like) {
+            $like->delete();
+        });
+        $request->user()->dislikes->each(function ($dislike) {
+            $dislike->delete();
+        });
+        $request->user()->comments->each(function ($comment) {
+            $comment->delete();
         });
         $request->user()->delete();
         return response()->json(['message' => 'profile deleted'], 200);

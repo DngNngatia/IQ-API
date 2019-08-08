@@ -42,4 +42,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Score::class);
     }
+
+    public function likes(){
+        return $this->hasMany(Like::class);
+    }
+    public function dislikes(){
+        return $this->hasMany(Dislike::class);
+    }
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
 }
