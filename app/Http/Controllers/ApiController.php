@@ -90,7 +90,7 @@ class ApiController extends Controller
         })->values();
         return response()->json(["message" => "available", "data" => $this->paginate($subjects)], 200);
     }
-    public function paginate($items, $perPage = 2, $page = null, $options = [])
+    public function paginate($items, $perPage = 4, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
