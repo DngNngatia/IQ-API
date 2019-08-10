@@ -176,6 +176,7 @@ return [
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
+        NotificationChannels\ExpoPushNotifications\ExpoPushNotificationsServiceProvider::class,
 
     ],
 

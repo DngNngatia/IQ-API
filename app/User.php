@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'otp', 'password', 'profile_image', 'phone', 'title', 'description', 'address'
+        'name', 'email', 'otp', 'device_notification_token', 'notify_me', 'password', 'profile_image', 'phone', 'title', 'description', 'address'
     ];
 
     /**
@@ -43,13 +43,18 @@ class User extends Authenticatable
         return $this->hasMany(Score::class);
     }
 
-    public function likes(){
+    public function likes()
+    {
         return $this->hasMany(Like::class);
     }
-    public function dislikes(){
+
+    public function dislikes()
+    {
         return $this->hasMany(Dislike::class);
     }
-    public function comments(){
+
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 

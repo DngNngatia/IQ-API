@@ -3,13 +3,15 @@
 namespace App\Notifications;
 
 use App\Mail\SendMailable;
+use ExponentPhpSDK\Expo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Mail;
+use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 
-class PasswordReset extends Notification
+class SendUserNotification extends Notification
 {
     use Queueable;
 
@@ -31,7 +33,16 @@ class PasswordReset extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return [ExpoChannel::class];
+    }
+
+    public function toExpoPush($notifiable)
+    {
+
+        $expo = Expo::normalSetup();
+        $expo->subscribe($notifiable->name, $notifiable->token);
+        $notification = ['body' => 'Hello World!'];
+        $expo->notify($notifiable->name, $notification);
     }
 
     /**
@@ -42,11 +53,7 @@ class PasswordReset extends Notification
      */
     public function toMail($notifiable)
     {
-        $data = ['name' => $notifiable->name, "otp" => $notifiable->otp, 'email' => $notifiable->email];
-        Mail::send('emails.mail',['data' => $data], function($message) use($data) {
-            $message->to($data['email'], $data['name'])
-                ->subject('Otp code reset');
-        });
+
     }
 
     /**

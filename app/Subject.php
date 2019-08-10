@@ -2,12 +2,29 @@
 
 namespace App;
 
+use App\Jobs\SendNotifications;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Subject extends Model
 {
+
     protected $fillable = ['topic_id', 'subject_name', 'subject_avatar_url'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($subject) {
+            $users = User::where('notify_me',true)->get();
+            dispatch_now(new SendNotifications($users,$subject,'New Subject available, '));
+        });
+
+        static::updating(function ($subject) {
+            $users = User::where('notify_me',true)->get();
+            dispatch_now(new SendNotifications($users,$subject,'New questions added to subject, '));
+        });
+    }
 
     public function topic()
     {

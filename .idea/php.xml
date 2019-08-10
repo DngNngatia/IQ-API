@@ -103,6 +103,8 @@
       <path value="$PROJECT_DIR$/vendor/jakub-onderka/php-console-color" />
       <path value="$PROJECT_DIR$/vendor/zendframework/zend-diactoros" />
       <path value="$PROJECT_DIR$/vendor/paypal/rest-api-sdk-php" />
+      <path value="$PROJECT_DIR$/vendor/alymosul/laravel-exponent-push-notifications" />
+      <path value="$PROJECT_DIR$/vendor/alymosul/exponent-server-sdk-php" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

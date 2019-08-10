@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Notifications\PasswordReset;
+use App\Notifications\SendUserNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
