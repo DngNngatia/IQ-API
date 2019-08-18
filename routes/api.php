@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/user/update', 'ApiController@updateProfile');
     Route::get('/mpesa', 'MpesaController@sendMoney');
     Route::get('/paypal', 'PaypalController@payWithPaypal');
+    Route:: post('/store/device/token','RegisterController@token');
 
 });
 

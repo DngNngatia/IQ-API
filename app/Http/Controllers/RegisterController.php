@@ -19,7 +19,8 @@ class RegisterController extends Controller
             $user = new User([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
+                'device_notification_token' => $request->token
             ]);
             $user->save();
             return response()->json([
@@ -33,6 +34,14 @@ class RegisterController extends Controller
             ], 500);
         }
 
+    }
+
+    public function token(Request $request)
+    {
+        $request->user()->update([
+            'device_notification_token' => $request->token
+        ]);
+        return response()->json(['message' => 'token saved'], 200);
     }
 
     public function destroy(Request $request)

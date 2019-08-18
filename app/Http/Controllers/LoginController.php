@@ -25,7 +25,7 @@ class LoginController extends Controller
                 $user = Auth::user();
                 Auth::login($user);
                 $token = $user->createToken('MyApp')->accessToken;
-                return response()->json(['message' => 'success', 'access_token' => $token], 200);
+                return response()->json(['message' => 'success', 'access_token' => $token, 'user' => $request->user()], 200);
 
             } else {
                 return response()->json(['message' => 'Invalid credentials'], 401);
@@ -57,9 +57,10 @@ class LoginController extends Controller
                     'otp' => $otp
                 ]);
                 $data = ['name' => $user->name, "otp" => $user->otp, 'email' => $user->email];
-                Mail::send('emails.mail',['data' => $data], function($message) use($data) {
+                Mail::send('emails.mail', ['data' => $data], function ($message) use ($data) {
                     $message->to($data['email'], $data['name'])
-                        ->subject('Otp code reset');
+                        ->subject('Otp code reset')
+                         ->from('noprex-team@gmail.com','Derrick Ngatia CEO');;
                 });
                 return response()->json([
                     'message' => 'Otp sent to email',
@@ -75,7 +76,7 @@ class LoginController extends Controller
     public function resetPassword(Request $request)
     {
         $user = User::where('email', $request->input('email'))->first();
-        if (str_is($user->otp,$request->input('otp'))) {
+        if (str_is($user->otp, $request->input('otp'))) {
             $user->fill(['password' => Hash::make($request->input('password'))])->save();
             return response()->json([
                 'message' => 'Password changed successfully',
